@@ -1,46 +1,46 @@
 # Chaos Loader Generator (Random Load Simulator)
 
-โปรเจกต์นี้สำหรับสร้าง **Fake Random Spike Utilization** (CPU, Memory, Disk I/O) บนเครื่องคอมพิวเตอร์ผ่าน Docker เพื่อใช้ทดสอบระบบ Monitoring หรือ Alerting โดยจะจำลองเหตุการณ์โหลดสูงแบบสุ่ม (Random) เป็นระยะเวลา 10 นาที
+This project is designed to generate **Fake Random Spike Utilization** (CPU, Memory, Disk I/O) on a host machine via Docker. It is intended for testing Monitoring or Alerting systems by simulating random high-load events over a 10-minute period.
 
 ## Feature Changes
-- เพิ่ม `chaos_loader.sh`: Script หลักสำหรับควบคุมจังหวะการเกิด Load (Spike) แบบสุ่ม
-- เพิ่ม `Dockerfile`: สำหรับสร้าง Environment ที่มีเครื่องมือ `stress-ng` พร้อมใช้งาน
-- เพิ่ม `docker-compose.yml`: สำหรับรัน Simulation ได้ง่ายๆ ด้วยคำสั่งเดียว
+- Added `chaos_loader.sh`: The main script for controlling the timing of random load generation (Spikes).
+- Added `Dockerfile`: For building an environment with the `stress-ng` tool pre-installed.
+- Added `docker-compose.yml`: For executing the simulation easily with a single command.
 
-## Prerequisites (สิ่งที่ต้องเตรียม)
-1.  **Docker** และ **Docker Compose** ติดตั้งอยู่บนเครื่อง
-    - สำหรับ Ubuntu: `sudo apt install docker.io docker-compose`
-2.  Internet Connection (สำหรับ build docker image ครั้งแรก)
+## Prerequisites
+1.  **Docker** and **Docker Compose** must be installed on the machine.
+    - For Ubuntu: `sudo apt install docker.io docker-compose`
+2.  Internet Connection (required for building the Docker image for the first time).
 
-## How to use (วิธีใช้งาน)
+## Usage Instructions
 
-1. **Clone หรือ Download** ไฟล์ทั้งหมดลงเครื่อง
+1. **Clone or Download** all files to your local machine.
 
 2. **Start Simulation**
-   รันคำสั่งต่อไปนี้เพื่อเริ่มจำลองโหลด:
+   Run the following command to initiate the load simulation:
    ```bash
    docker-compose up --build
    ```
 
 3. **Monitor**
-   - หน้าจอ Terminal จะแสดง Log การทำงานว่ากำลังเกิด Spike ประเภทไหน (CPU/Mem/Disk) และนานเท่าไหร่
-   - หากคุณมี Script เก็บ Log แยกต่างหาก ให้รัน Script นั้นคู่ขนานกันไปได้เลย (Load จะเกิดขึ้นจริงบน System Resource ของเครื่อง)
+   - The terminal output will display logs indicating the type of Spike occurring (CPU/Mem/Disk) and its duration.
+   - If you have a separate log collection script, you may run it in parallel (actual load will be generated on the machine's system resources).
 
 4. **Stop**
-   โปรแกรมจะทำงาน 10 นาทีแล้วหยุดเอง หรือกด `Ctrl+C` เพื่อหยุดทันที
+   The program will run for 10 minutes and terminate automatically, or you can press `Ctrl+C` to stop it immediately.
 
-## Configuration (การตั้งค่า)
-คุณสามารถปรับแต่งพฤติกรรมได้ในไฟล์ `docker-compose.yml` ส่วน `environment`:
+## Configuration
+You can customize the behavior in the `docker-compose.yml` file under the `environment` section:
 
-| ตัวแปร | ค่า Default | คำอธิบาย |
+| Variable | Default Value | Description |
 |--------|-------------|----------|
-| `TEST_DURATION_SEC` | 600 | ระยะเวลาทดสอบรวมทั้งหมด (วินาที) |
-| `MAX_IDLE_SEC` | 30 | เวลาพักสูงสุดระหว่าง Spike |
-| `MIN_IDLE_SEC` | 5 | เวลาพักต่ำสุดระหว่าง Spike |
-| `MAX_SPIKE_SEC` | 20 | ระยะเวลาที่ Spike เกิดขึ้นนานสุด |
-| `MIN_SPIKE_SEC` | 5 | ระยะเวลาที่ Spike เกิดขึ้นสั้นสุด |
+| `TEST_DURATION_SEC` | 600 | Total test duration (seconds) |
+| `MAX_IDLE_SEC` | 30 | Maximum idle time between spikes |
+| `MIN_IDLE_SEC` | 5 | Minimum idle time between spikes |
+| `MAX_SPIKE_SEC` | 20 | Maximum duration of a spike |
+| `MIN_SPIKE_SEC` | 5 | Minimum duration of a spike |
 
-## Sample Output (ตัวอย่างการทำงาน)
+## Sample Output
 
 ```text
 chaos-loader_1  | ==========================================
