@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  chaos-loader:
+    build: .
+    container_name: chaos_loader_simulation
+    image: chaos-loader:latest
+    environment:
+      - TEST_DURATION_SEC=600  # Total duration 10 minutes
+      - MAX_IDLE_SEC=30        # Max time between spikes
+      - MIN_IDLE_SEC=5         # Min time between spikes
+      - MAX_SPIKE_SEC=20       # Max duration of a spike
+      - MIN_SPIKE_SEC=5        # Min duration of a spike
+    deploy:
+      resources:
+        limits:
+          # Optional: Limit container resources if you don't want to freeze the host entirely
+          # cpus: '2.0'
+          # memory: 1G
+    restart: "no"
