@@ -12,9 +12,9 @@ services:
       - MAX_SPIKE_SEC=20       # Max duration of a spike
       - MIN_SPIKE_SEC=5        # Min duration of a spike
     deploy:
-      resources:
-        limits:
-          # Optional: Limit container resources if you don't want to freeze the host entirely
-          # cpus: '2.0'
-          # memory: 1G
+      # resources:
+      #   limits:
+      #     Optional: Limit container resources if you don't want to freeze the host entirely
+      #     cpus: '2.0'
+      #     memory: 1G
     restart: "no"
